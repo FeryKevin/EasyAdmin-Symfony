@@ -15,4 +15,42 @@ class Technology implements IdInterface, NameInterface
 {
     use IdTrait;
     use NameTrait;
+
+    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'technologies')]
+    private Collection $projects;
+
+    public function __construct()
+    {
+        $this->projects = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection<int, Project>
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): self
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
+            $project->setTechnology($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): self
+    {
+        if ($this->projects->removeElement($project)) {
+            // set the owning side to null (unless already changed)
+            if ($project->getTechnology() === $this) {
+                $project->setTechnology(null);
+            }
+        }
+
+        return $this;
+    }
 }
