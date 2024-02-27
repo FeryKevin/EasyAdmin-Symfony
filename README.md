@@ -1,11 +1,13 @@
 # EasyAdmin-Symfony CRUD
 
-Utilisateur user :
+Utilisateurs :
+
+User :
 	
 	email : user@user.com
 	mot de passe : user
 
- Utilisateur admin :
+Admin :
 	
 	email : admin@admin.com
 	mot de passe : admin
