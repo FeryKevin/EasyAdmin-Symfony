@@ -3,16 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\ProjectRepository;
+use App\Entity\Interfaces\IdInterface;
+use App\Entity\Interfaces\NameInterface;
+use App\Entity\Traits\IdTrait;
+use App\Entity\Traits\NameTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
-class Project
+class Project implements IdInterface, NameInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    use IdTrait;
+    use NameTrait;
 
     #[ORM\Column(length: 255, nullable: false)]
     private ?string $description = null;
@@ -29,13 +31,8 @@ class Project
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: false)]
     private ?\DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: false)]
     private ?\DateTimeInterface $updatedAt = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getDescription(): ?string
     {
