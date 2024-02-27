@@ -19,6 +19,9 @@ class Project implements IdInterface, NameInterface
     use NameTrait;
 
     #[ORM\Column(length: 255, nullable: false)]
+    private ?string $thumbnail = null;
+
+    #[ORM\Column(length: 255, nullable: false)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -46,6 +49,18 @@ class Project implements IdInterface, NameInterface
     public function __construct()
     {
         $this->technologies = new ArrayCollection();
+    }
+
+    public function getThumbnail(): ?string
+    {
+        return $this->thumbnail;
+    }
+
+    public function setThumbnail(?string $thumbnail = null): self
+    {
+        $this->thumbnail = $thumbnail;
+
+        return $this;
     }
 
     public function getDescription(): ?string
