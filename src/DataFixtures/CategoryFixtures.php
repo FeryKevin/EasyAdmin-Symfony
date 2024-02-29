@@ -25,8 +25,8 @@ class CategoryFixtures extends Fixture
         for ($i = 0; $i < 4; $i++) {
             $category = new Category();
             $category->setName($categoriesData[$i]);
-            $this->addReference("category-{$i}", $category);
             $manager->persist($category);
+            $this->addReference("category-{$i}", $category);
         }
 
         $manager->flush();

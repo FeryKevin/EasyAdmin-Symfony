@@ -34,8 +34,8 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
             $project->setCreatedAt($faker->dateTime());
             $project->setUpdatedAt($faker->dateTime());
             $project->setCategory($this->getReference("category-" . (string)rand(0, 3)));
-            $this->addReference("project-{$i}", $project);
             $manager->persist($project);
+            $this->addReference("project-{$i}", $project);
 
             for ($j = 0; $j < 10; $j++) {
                 $project = $this->getReference("project-{$i}");

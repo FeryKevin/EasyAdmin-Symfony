@@ -20,8 +20,6 @@ class TechnologyFixtures extends Fixture
             $technology = new Technology();
             $technology->setName($technologiesData[$i]);
             $manager->persist($technology);
-
-            // Ajouter une référence à chaque technologie
             $this->addReference("technology-{$i}", $technology);
         }
 
