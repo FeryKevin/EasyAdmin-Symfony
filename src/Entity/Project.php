@@ -158,8 +158,8 @@ class Project implements IdInterface, NameInterface
     public function addTechnology(Technology $technology): self
     {
         if (!$this->technologies->contains($technology)) {
-            $this->technologies->add($technology);
-            $technology->setProject($this);
+            $this->technologies[] = $technology;
+            $technology->addProject($this);
         }
 
         return $this;
@@ -168,10 +168,7 @@ class Project implements IdInterface, NameInterface
     public function removeTechnology(Technology $technology): self
     {
         if ($this->technologies->removeElement($technology)) {
-            // set the owning side to null (unless already changed)
-            if ($technology->getProject() === $this) {
-                $technology->setProject(null);
-            }
+            $technology->removeProject($this);
         }
 
         return $this;

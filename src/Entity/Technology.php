@@ -7,6 +7,8 @@ use App\Entity\Interfaces\IdInterface;
 use App\Entity\Interfaces\NameInterface;
 use App\Entity\Traits\IdTrait;
 use App\Entity\Traits\NameTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,24 +34,18 @@ class Technology implements IdInterface, NameInterface
         return $this->projects;
     }
 
-    public function addProject(Project $project): self
+    public function addProject(Project $projects): self
     {
-        if (!$this->projects->contains($project)) {
-            $this->projects->add($project);
-            $project->setTechnology($this);
+        if (!$this->projects->contains($projects)) {
+            $this->projects[] = $projects;
         }
-
+    
         return $this;
     }
 
-    public function removeProject(Project $project): self
+    public function removeProject(Project $projects): self
     {
-        if ($this->projects->removeElement($project)) {
-            // set the owning side to null (unless already changed)
-            if ($project->getTechnology() === $this) {
-                $project->setTechnology(null);
-            }
-        }
+        $this->projects->removeElement($projects);
 
         return $this;
     }
