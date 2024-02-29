@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Project;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -12,6 +13,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 
 class DashboardController extends AbstractDashboardController
 {
+    public function __construct(
+        private AdminUrlGenerator $adminUrlGenerator
+    ) {
+    }
+
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
@@ -23,12 +29,14 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('EasyAdmin Symfony');
+            ->setTitle('Gestion des projets');
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        //yield MenuItem::linkToCrud('The Label', 'fas fa-list', Project::class);
+        yield MenuItem::subMenu('Actions', 'fas fa-bars')->setSubItems([
+            MenuItem::linkToCrud('View project', 'fas fa-eye', Project::class),
+            MenuItem::linkToCrud('Add project', 'fas fa-plus', Project::class)->setAction(Crud::PAGE_NEW)
+        ]);
     }
 }
