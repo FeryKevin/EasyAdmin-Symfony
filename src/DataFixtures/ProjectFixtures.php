@@ -23,7 +23,7 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Faker\Factory::create('fr_FR');
 
-        for ($i = 0; $i < 9; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $project = new Project();
             $project->setName($faker->word());
             $project->setThumbnail("project.png");
@@ -36,6 +36,16 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
             $project->setCategory($this->getReference("category-" . (string)rand(0, 3)));
             $this->addReference("project-{$i}", $project);
             $manager->persist($project);
+
+            for ($j = 0; $j < 10; $j++) {
+                $project = $this->getReference("project-{$i}");
+                $numTechnologies = rand(1, 3);
+
+                for ($k = 0; $k < $numTechnologies; $k++) {
+                    $technology = $this->getReference("technology-" . (string)rand(0, 2));
+                    $project->addTechnology($technology);
+                }
+            }
         }
 
         $manager->flush();
