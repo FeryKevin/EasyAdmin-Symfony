@@ -33,18 +33,26 @@ class ProjectCrudController extends AbstractCrudController
             TextField::new('link', 'Lien'),
             DateTimeField::new('startAt', 'Date de début'),
             DateTimeField::new('endAt', 'Date de fin'),
-            AssociationField::new('category'),
-            DateTimeField::new('createdAt')->hideOnDetail(),
-            DateTimeField::new('updatedAt')->hideOnDetail(),
+            AssociationField::new('category', 'Catégorie'),
+            DateTimeField::new('createdAt')->hideOnForm(),
+            DateTimeField::new('updatedAt')->hideOnForm(),
         ];
     }
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        if(!$entityInstance instanceof Project) return;
+        if (!$entityInstance instanceof Project) return;
 
-        $entityInstance->setCreatedAt(new \DateTimeImmutable);
-        $entityInstance->setUpdatedAt(new \DateTimeImmutable);
+        $entityInstance->setCreatedAt(new \DateTimeImmutable());
+        $entityInstance->setUpdatedAt(new \DateTimeImmutable());
         parent::persistEntity($entityManager, $entityInstance);
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        if (!$entityInstance instanceof Project) return;
+
+        $entityInstance->setUpdatedAt(new \DateTimeImmutable());
+        parent::updateEntity($entityManager, $entityInstance);
     }
 }
