@@ -31,8 +31,8 @@ class ProjectCrudController extends AbstractCrudController
                 ->setUploadDir(self::PROJECTS_UPLOAD_DIR),
             TextEditorField::new('description'),
             TextField::new('link', 'Lien'),
-            DateTimeField::new('startAt', 'Date de début'),
-            DateTimeField::new('endAt', 'Date de fin'),
+            DateTimeField::new('startAt', 'Date de début')->setFormTypeOption('input', 'datetime_immutable'),
+            DateTimeField::new('endAt', 'Date de fin')->setFormTypeOption('input', 'datetime_immutable'),
             AssociationField::new('category', 'Catégorie'),
             DateTimeField::new('createdAt')->hideOnForm(),
             DateTimeField::new('updatedAt')->hideOnForm(),
@@ -43,8 +43,9 @@ class ProjectCrudController extends AbstractCrudController
     {
         if (!$entityInstance instanceof Project) return;
 
-        $entityInstance->setCreatedAt(new \DateTimeImmutable());
-        $entityInstance->setUpdatedAt(new \DateTimeImmutable());
+        $now = new \DateTimeImmutable();
+        $entityInstance->setCreatedAt($now);
+        $entityInstance->setUpdatedAt($now);
         parent::persistEntity($entityManager, $entityInstance);
     }
 
