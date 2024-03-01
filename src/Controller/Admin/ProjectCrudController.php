@@ -34,8 +34,6 @@ class ProjectCrudController extends AbstractCrudController
             DateTimeField::new('startAt', 'Date de début')->setFormTypeOption('input', 'datetime_immutable'),
             DateTimeField::new('endAt', 'Date de fin')->setFormTypeOption('input', 'datetime_immutable'),
             AssociationField::new('category', 'Catégorie'),
-            DateTimeField::new('createdAt')->hideOnForm(),
-            DateTimeField::new('updatedAt')->hideOnForm(),
         ];
     }
 
