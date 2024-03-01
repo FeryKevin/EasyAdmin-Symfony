@@ -11,6 +11,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\CrudAction;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 
 class ProjectCrudController extends AbstractCrudController
 {
@@ -35,6 +39,22 @@ class ProjectCrudController extends AbstractCrudController
             DateTimeField::new('endAt', 'Date de fin')->setFormTypeOption('input', 'datetime_immutable'),
             AssociationField::new('category', 'Catégorie'),
         ];
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        $viewAction = Action::new('view', 'Voir')
+            ->linkToCrudAction(Action::DETAIL)
+            ->setIcon('fa fa-eye');
+
+        return $actions
+            ->add(Crud::PAGE_INDEX, $viewAction)
+            ->update(Crud::PAGE_INDEX, Action::EDIT, function (Action $action) {
+                return $action->setIcon('fa fa-edit')->setLabel('Modifier');
+            })
+            ->update(Crud::PAGE_INDEX, Action::DELETE, function (Action $action) {
+                return $action->setIcon('fa fa-trash')->setLabel('Supprimer');
+            });
     }
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
