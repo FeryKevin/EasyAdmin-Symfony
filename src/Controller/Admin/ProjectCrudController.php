@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Project;
+use App\Entity\Technology;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -15,6 +16,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\CrudAction;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextBlockField;
 
 class ProjectCrudController extends AbstractCrudController
 {
@@ -28,6 +33,19 @@ class ProjectCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        $technologiesField = AssociationField::new('technologies', 'Technologies')
+            ->onlyOnForms()
+            ->setFormTypeOptions([
+                'by_reference' => false,
+                'multiple' => true,
+                'class' => Technology::class,
+                'choice_label' => 'name',
+            ]);
+
+        if (Crud::PAGE_DETAIL === $pageName) {
+            $technologiesField->onlyOnDetail();
+        }
+
         return [
             TextField::new('name', 'Nom'),
             ImageField::new('thumbnail', 'Image')
@@ -37,7 +55,10 @@ class ProjectCrudController extends AbstractCrudController
             TextField::new('link', 'Lien'),
             DateTimeField::new('startAt', 'Date de début')->setFormTypeOption('input', 'datetime_immutable'),
             DateTimeField::new('endAt', 'Date de fin')->setFormTypeOption('input', 'datetime_immutable'),
+            DateTimeField::new('createdAt', 'Date de création')->onlyOnDetail(),
+            DateTimeField::new('updateAd', 'Date de modification')->onlyOnDetail(),
             AssociationField::new('category', 'Catégorie'),
+            $technologiesField,
         ];
     }
 
