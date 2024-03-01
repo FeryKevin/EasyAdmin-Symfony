@@ -34,9 +34,9 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::subMenu('Actions', 'fas fa-bars')->setSubItems([
-            MenuItem::linkToCrud('View project', 'fas fa-eye', Project::class),
-            MenuItem::linkToCrud('Add project', 'fas fa-plus', Project::class)->setAction(Crud::PAGE_NEW)
+        yield MenuItem::subMenu('Projets', 'fas fa-bars')->setSubItems([
+            MenuItem::linkToCrud('Consulter les projets', 'fas fa-eye', Project::class),
+            MenuItem::linkToCrud('Ajouter un projet', 'fas fa-plus', Project::class)->setAction(Crud::PAGE_NEW)
         ]);
     }
 }
