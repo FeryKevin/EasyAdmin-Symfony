@@ -46,6 +46,7 @@ class ProjectCrudController extends AbstractCrudController
                 'multiple' => true,
                 'class' => Technology::class,
                 'choice_label' => 'name',
+                'required' => 'true',
             ]);
 
         if (Crud::PAGE_DETAIL === $pageName) {
@@ -63,17 +64,18 @@ class ProjectCrudController extends AbstractCrudController
             ImageField::new('thumbnail', 'Image')
                 ->setBasePath(self::PROJECTS_BASE_PATH)
                 ->setUploadDir(self::PROJECTS_UPLOAD_DIR),
-            AssociationField::new('category', 'Catégorie'),
+            AssociationField::new('category', 'Catégorie')
+                ->setRequired(true),
             $technologiesField,
         ];
 
         if (in_array($pageName, [Crud::PAGE_DETAIL, Crud::PAGE_NEW, Crud::PAGE_EDIT])) {
-            $fields[] = TextEditorField::new('description');
-            $fields[] = TextField::new('link', 'Lien');
             $fields[] = DateTimeField::new('startAt', 'Date de début')->setFormTypeOption('input', 'datetime_immutable');
             $fields[] = DateTimeField::new('endAt', 'Date de fin')->setFormTypeOption('input', 'datetime_immutable');
             $fields[] = DateTimeField::new('createdAt', 'Date de création')->onlyOnDetail();
             $fields[] = DateTimeField::new('updateAd', 'Date de modification')->onlyOnDetail();
+            $fields[] = TextField::new('link', 'Lien');
+            $fields[] = TextEditorField::new('description');
         }
 
         return $fields;

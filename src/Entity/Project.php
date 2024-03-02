@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project implements IdInterface, NameInterface
@@ -19,15 +20,18 @@ class Project implements IdInterface, NameInterface
     use NameTrait;
 
     #[ORM\Column(length: 255, nullable: false)]
+    #[Assert\NotNull(message: 'Veuillez mettre une image')]
     private ?string $thumbnail = null;
 
     #[ORM\Column(length: 255, nullable: false)]
+    #[Assert\NotNull(message: 'Veuillez indiquer une description')]
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $link = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: false)]
+    #[Assert\NotNull(message: 'Veuillez indiquer une date de début')]
     private ?\DateTimeInterface $startAt = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
@@ -41,9 +45,11 @@ class Project implements IdInterface, NameInterface
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'projects')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: 'Veuillez indiquer une catégorie')]
     private ?Category $category = null;
 
     #[ORM\ManyToMany(targetEntity: Technology::class, inversedBy: 'projects')]
+    #[Assert\NotNull(message: 'Veuillez indiquer une ou plusieurs technologies')]
     private Collection $technologies;
 
     public function __construct()
