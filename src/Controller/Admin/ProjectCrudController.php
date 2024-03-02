@@ -52,20 +52,25 @@ class ProjectCrudController extends AbstractCrudController
                 ->onlyOnIndex();
         }
 
-        return [
+        $fields = [
             TextField::new('name', 'Nom'),
             ImageField::new('thumbnail', 'Image')
                 ->setBasePath(self::PROJECTS_BASE_PATH)
                 ->setUploadDir(self::PROJECTS_UPLOAD_DIR),
-            TextEditorField::new('description'),
-            TextField::new('link', 'Lien'),
-            DateTimeField::new('startAt', 'Date de début')->setFormTypeOption('input', 'datetime_immutable'),
-            DateTimeField::new('endAt', 'Date de fin')->setFormTypeOption('input', 'datetime_immutable'),
-            DateTimeField::new('createdAt', 'Date de création')->onlyOnDetail(),
-            DateTimeField::new('updateAd', 'Date de modification')->onlyOnDetail(),
             AssociationField::new('category', 'Catégorie'),
             $technologiesField,
         ];
+
+        if (in_array($pageName, [Crud::PAGE_DETAIL, Crud::PAGE_NEW, Crud::PAGE_EDIT])) {
+            $fields[] = TextEditorField::new('description');
+            $fields[] = TextField::new('link', 'Lien');
+            $fields[] = DateTimeField::new('startAt', 'Date de début')->setFormTypeOption('input', 'datetime_immutable');
+            $fields[] = DateTimeField::new('endAt', 'Date de fin')->setFormTypeOption('input', 'datetime_immutable');
+            $fields[] = DateTimeField::new('createdAt', 'Date de création')->onlyOnDetail();
+            $fields[] = DateTimeField::new('updateAd', 'Date de modification')->onlyOnDetail();
+        }
+
+        return $fields;
     }
 
     public function configureActions(Actions $actions): Actions
