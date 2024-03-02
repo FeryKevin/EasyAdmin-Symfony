@@ -47,6 +47,11 @@ class ProjectCrudController extends AbstractCrudController
                 ->onlyOnDetail();
         }
 
+        if (Crud::PAGE_INDEX === $pageName) {
+            $technologiesField = CollectionField::new('technologies', 'Technologies')
+                ->onlyOnIndex();
+        }
+
         return [
             TextField::new('name', 'Nom'),
             ImageField::new('thumbnail', 'Image')
