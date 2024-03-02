@@ -43,7 +43,8 @@ class ProjectCrudController extends AbstractCrudController
             ]);
 
         if (Crud::PAGE_DETAIL === $pageName) {
-            $technologiesField->onlyOnDetail();
+            $technologiesField = ArrayField::new('technologies', 'Technologies')
+                ->onlyOnDetail();
         }
 
         return [
