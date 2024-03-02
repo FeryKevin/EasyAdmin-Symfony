@@ -31,6 +31,12 @@ class ProjectCrudController extends AbstractCrudController
         return Project::class;
     }
 
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->setPageTitle('index', 'Liste des projets');
+    }
+
     public function configureFields(string $pageName): iterable
     {
         $technologiesField = AssociationField::new('technologies', 'Technologies')
