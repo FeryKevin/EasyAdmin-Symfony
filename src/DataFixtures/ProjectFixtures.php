@@ -8,6 +8,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use App\Entity\Project;
 use App\Repository\CategoryRepository;
 use Faker;
+use DateTimeImmutable;
 
 class ProjectFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -29,10 +30,10 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
             $project->setThumbnail("project.png");
             $project->setDescription($faker->sentence());
             $project->setLink($faker->url());
-            $project->setStartAt($faker->dateTime());
-            $project->setEndAt($faker->dateTime());
-            $project->setCreatedAt($faker->dateTime());
-            $project->setUpdatedAt($faker->dateTime());
+            $project->setStartAt(DateTimeImmutable::createFromMutable($faker->dateTime()));
+            $project->setEndAt(DateTimeImmutable::createFromMutable($faker->dateTime()));
+            $project->setCreatedAt(DateTimeImmutable::createFromMutable($faker->dateTime()));
+            $project->setUpdatedAt(DateTimeImmutable::createFromMutable($faker->dateTime()));            
             $project->setCategory($this->getReference("category-" . (string)rand(0, 3)));
             $manager->persist($project);
             $this->addReference("project-{$i}", $project);
